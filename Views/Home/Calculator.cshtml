@@ -1,0 +1,26 @@
+﻿@model dynamic
+
+@{
+    Layout = null;
+}
+@if (ViewBag.Error != null)
+{
+    <p>@ViewBag.Error</p>
+}
+else
+{
+    <p>Wynik działania dla @ViewBag.A @ViewBag.Op @ViewBag.B = @ViewBag.Result</p>
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Calculator</title>
+</head>
+<body>
+<div>
+    
+</div>
+</body>
+</html>
