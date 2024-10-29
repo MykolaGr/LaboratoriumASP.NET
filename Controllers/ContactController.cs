@@ -1,24 +1,26 @@
 ﻿using Laboratorium1.Models;
+using Laboratorium1.Models.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Laboratorium1.Controllers
 {
-    public class Contact : Controller
+    public class ContactController : Controller
     {
-        static private Dictionary<int, ContactModel> _contacts = new Dictionary<int, ContactModel>()
+     
+        private readonly IContactService _contactService;
+
+        public ContactController(IContactService contactService)
         {
-            { 1, new() { Id = 1, Email = "st@wsei.edu/pl", FirstName = "Adam", LastName = "Johnson", PhoneNumber = "1234 4321 5432 6789",} }
-        };
-        private static int currentId = 0;
-        
+            _contactService = contactService;
+        }
         public ActionResult Index()
         {
-            return View(_contacts);
+            return View(_contactService.GetAll());
         }
 
         public ActionResult Add()
         {
-            return View();
+            return View(_contactService.GetById(id));
         }
 
         [HttpPost]
@@ -28,15 +30,24 @@ namespace Laboratorium1.Controllers
             {
                 return View(model);
             }
+     
+            _contactService.Add(model);
+            return View("Index", _contacts);
+        }
+        public ActionResult Edit(ContactModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
-            model.Id = ++currentId;
-            _contacts.Add(model.Id, model);
+            _contactService.Update(model);
             return View("Index", _contacts);
         }
 
         public ActionResult Delete(int id)
         {
-            _contacts.Remove(id);
+
             return View("Index", _contacts);
         }
 

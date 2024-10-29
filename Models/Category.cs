@@ -1,0 +1,13 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Laboratorium1.Models;
+
+public enum Category
+{
+    [Display(Name = "Rodzina")]
+    Family = 1,
+    [Display(Name = "Znajomy")]
+    Friend = 2,
+    [Display(Name = "kontakt zawodowy")]
+    Business = 4
+}

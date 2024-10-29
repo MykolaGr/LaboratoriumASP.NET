@@ -4,9 +4,9 @@
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
-
-<h2 xmlns="http://www.w3.org/1999/html">Dodaj kontakt</h2>
-<form asp-action="Add" method="post">
+<h2 xmlns="http://www.w3.org/1999/html">Edytuj kontakt</h2>
+<form asp-action="Edit" method="post">
+    <input asp-for="Id"/>
     <div class="mb-3">
         <label class="form-label" asp-for="FirstName"></label>
         <input class="form-control" asp-for="FirstName"/>
@@ -25,7 +25,7 @@
     <div class="mb-3">
         <label class="form-label" asp-for="PhoneNumber"></label>
         <input class="form-control" asp-for="PhoneNumber"/>
-        <span asp-validation-for="PhoneNumber" ></span>
+        <span asp-validation-for="PhoneNumber"></span>
     </div>
     <div class="mb-3">
         <label class="form-label" asp-for="BirthDate"></label>
@@ -37,9 +37,9 @@
         <select class="form-control"
                 asp-items="@Html.GetEnumSelectList<Category>()"
                 asp-for="Category">
-            
+
         </select>
         <span asp-validation-for="Category"></span>
     </div>
-    <button type="submit" class="btn btn-outline-primary">Dodaj</button>
+    <button type="submit" class="btn btn-outline-primary">Aktualizuj</button>
 </form>
