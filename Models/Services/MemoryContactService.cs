@@ -11,7 +11,7 @@ public class MemoryContactService: IContactService
             1,
             new ContactModel
             {
-                Id = 1, Email = "st@wsei.edu/pl", FirstName = "Adam", LastName = "Johnson", Category = Category.Family,
+                Id = 1, Email = "st@wsei.edu.pl", FirstName = "Adam", LastName = "Johnson", Category = Category.Family,
                 PhoneNumber = "123 432 543",
             }
         },
@@ -19,7 +19,7 @@ public class MemoryContactService: IContactService
             2,
             new ContactModel
             {
-                Id = 2, Email = "abcd@wsei.edu/pl", FirstName = "John", LastName = "Doe", Category = Category.Business,
+                Id = 2, Email = "abcd@wsei.edu.pl", FirstName = "John", LastName = "Doe", Category = Category.Business,
                 PhoneNumber = "898 432 543",
             }
         },
@@ -27,7 +27,7 @@ public class MemoryContactService: IContactService
             3,
             new ContactModel
             {
-                Id = 3, Email = "qwerasd@wsei.edu/pl", FirstName = "Dave", LastName = "Green", Category = Category.Friend,
+                Id = 3, Email = "qwerasd@wsei.edu.pl", FirstName = "Dave", LastName = "Green", Category = Category.Friend,
                 PhoneNumber = "124 474 543",
             }
         }

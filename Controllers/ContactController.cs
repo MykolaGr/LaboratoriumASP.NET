@@ -6,23 +6,23 @@ namespace Laboratorium1.Controllers
 {
     public class ContactController : Controller
     {
-     
         private readonly IContactService _contactService;
 
         public ContactController(IContactService contactService)
         {
             _contactService = contactService;
         }
+        
         public ActionResult Index()
         {
             return View(_contactService.GetAll());
         }
-
+        
         public ActionResult Add()
         {
-            return View(_contactService.GetById(id));
+            return View();
         }
-
+        
         [HttpPost]
         public ActionResult Add(ContactModel model)
         {
@@ -30,10 +30,23 @@ namespace Laboratorium1.Controllers
             {
                 return View(model);
             }
-     
+
             _contactService.Add(model);
-            return View("Index", _contacts);
+            return RedirectToAction(nameof(Index)); 
         }
+        
+        public ActionResult Edit(int id)
+        {
+            var contact = _contactService.GetById(id);
+            if (contact == null)
+            {
+                return NotFound(); 
+            }
+            return View(contact);
+        }
+
+       
+        [HttpPost]
         public ActionResult Edit(ContactModel model)
         {
             if (!ModelState.IsValid)
@@ -42,18 +55,36 @@ namespace Laboratorium1.Controllers
             }
 
             _contactService.Update(model);
-            return View("Index", _contacts);
+            return RedirectToAction(nameof(Index)); 
         }
 
+        
         public ActionResult Delete(int id)
         {
-
-            return View("Index", _contacts);
+            var contact = _contactService.GetById(id);
+            if (contact == null)
+            {
+                return NotFound(); 
+            }
+            return View(contact);
         }
-
+        
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            _contactService.Delete(id);
+            return RedirectToAction(nameof(Index)); 
+        }
         public ActionResult Details(int id)
         {
-            return View(_contacts[id]);
+            var contact = _contactService.GetById(id);
+            if (contact == null)
+            {
+                return NotFound(); 
+            }
+            return View(contact);
         }
+
     }
-} 
+}

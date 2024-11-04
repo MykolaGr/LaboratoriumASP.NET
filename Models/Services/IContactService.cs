@@ -4,9 +4,9 @@ namespace Laboratorium1.Models.Services;
 
 public interface IContactService
 {
-    void Add(ContactController contact);
-    void Update(ContactController contact);
+    void Add(ContactModel contact);
+    void Update(ContactModel contact);
     void Delete(int id);
     List<ContactModel> GetAll();
-    ContactModel GetById(int id);
+    ContactModel? GetById(int id);
 }

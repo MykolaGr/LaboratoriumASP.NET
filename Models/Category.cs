@@ -8,6 +8,6 @@ public enum Category
     Family = 1,
     [Display(Name = "Znajomy")]
     Friend = 2,
-    [Display(Name = "kontakt zawodowy")]
+    [Display(Name = "Kontakt zawodowy")]
     Business = 4
 }
