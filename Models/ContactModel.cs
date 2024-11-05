@@ -29,7 +29,7 @@ public class ContactModel
     
     [Display(Name = "Data urodzenia")]
     [DataType(DataType.Date)]
-    public DateTime BirthDate { get; set; }
+    public DateOnly BirthDate { get; set; }
     
     [Display(Name = "Kategoria")]
     public Category Category { get; set; }
