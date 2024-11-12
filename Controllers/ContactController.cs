@@ -1,6 +1,7 @@
 ﻿using Laboratorium1.Models;
 using Laboratorium1.Models.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Laboratorium1.Controllers
 {
@@ -20,7 +21,16 @@ namespace Laboratorium1.Controllers
         
         public ActionResult Add()
         {
-            return View();
+            var model = new ContactModel();
+            model.Organizations = _contactService
+                .FindAllOrganizations()
+                .Select(o => new SelectListItem()
+                {
+                    Value = o.Id.ToString(),
+                    Text = o.Name,
+                    Selected = o.Id == 1
+                }).ToList();
+            return View(model);
         }
         
         [HttpPost]

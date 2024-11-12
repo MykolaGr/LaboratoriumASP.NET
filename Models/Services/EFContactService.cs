@@ -1,4 +1,6 @@
-﻿namespace Laboratorium1.Models.Services;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Laboratorium1.Models.Services;
 
 public class EFContactService: IContactService
 {
@@ -36,7 +38,15 @@ public class EFContactService: IContactService
 
     public ContactModel? GetById(int id)
     {
-        var entity = _context.Contacts.Find(id);
+        var entity = _context.Contacts
+            .Include(e => e.Organization)
+            .FirstOrDefault(e => e.Id == id);
+        
         return entity != null ? ContactMapper.FromEntity(entity) : null;
+    }
+
+    public List<OrganizationEntity> FindAllOrganizations()
+    {
+        return _context.Organization.ToList();
     }
 }

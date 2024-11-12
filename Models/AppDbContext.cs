@@ -9,6 +9,7 @@ public class AppDbContext: DbContext
         set;
     }
 
+    public DbSet<OrganizationEntity> Organization { get; set; }
     private string DbPath { get; set; }
     public AppDbContext()
     {
@@ -24,6 +25,38 @@ public class AppDbContext: DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<OrganizationEntity>()
+            .OwnsOne(o => o.Address)
+            .HasData(
+                new { OrganizationEntityId = 1, City = "Kraków", Street = "św. Filipa 17"},
+                new { OrganizationEntityId = 2, City = "Warszawa", Street = "Wesoła 15"}
+            );
+
+        modelBuilder.Entity<ContactEntity>()
+            .HasOne<OrganizationEntity>(c => c.Organization)
+            .WithMany(o => o.Contacts)
+            .HasForeignKey(o => o.OrganizationId);
+
+        modelBuilder.Entity<OrganizationEntity>()
+            .HasData(
+                new OrganizationEntity()
+                {
+                    Id = 1,
+                    Regon = "789456123",
+                    Nip = "178945623",
+                    Name = "WSEI"
+                    
+                        
+                },
+                new OrganizationEntity()
+                {
+                    Id = 2,
+                    Regon = "789456123",
+                    Nip = "178945623",
+                    Name = "Famo"
+                }
+            );
+        
         modelBuilder.Entity<ContactEntity>().HasData(
             new ContactEntity()
             {
@@ -32,7 +65,8 @@ public class AppDbContext: DbContext
                 LastName = "Johnson",
                 Email = "st@wsei.edu.pl",
                 PhoneNumber = "123 432 543",
-                BirthDate = new DateOnly(2001, 11, 10)
+                BirthDate = new DateOnly(2001, 11, 10),
+                OrganizationId = 1
             },
             new ContactEntity()
             {
@@ -41,7 +75,8 @@ public class AppDbContext: DbContext
                 LastName = "Johnson",
                 Email = "abc@wsei.edu.pl",
                 PhoneNumber = "464 987 543",
-                BirthDate = new DateOnly(1999, 01, 17)
+                BirthDate = new DateOnly(1999, 01, 17),
+                OrganizationId = 2
             }
         );
     }

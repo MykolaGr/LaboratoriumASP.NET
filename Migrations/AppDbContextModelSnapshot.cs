@@ -46,12 +46,17 @@ namespace Laboratorium1.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("OrganizationId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(12)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId");
 
                     b.ToTable("contacts");
 
@@ -65,6 +70,7 @@ namespace Laboratorium1.Migrations
                             Email = "st@wsei.edu.pl",
                             FirstName = "Adam",
                             LastName = "Johnson",
+                            OrganizationId = 1,
                             PhoneNumber = "123 432 543"
                         },
                         new
@@ -76,8 +82,104 @@ namespace Laboratorium1.Migrations
                             Email = "abc@wsei.edu.pl",
                             FirstName = "John",
                             LastName = "Johnson",
+                            OrganizationId = 2,
                             PhoneNumber = "464 987 543"
                         });
+                });
+
+            modelBuilder.Entity("Laboratorium1.Models.OrganizationEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nip")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Regon")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("organisations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "WSEI",
+                            Nip = "178945623",
+                            Regon = "789456123"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Famo",
+                            Nip = "178945623",
+                            Regon = "789456123"
+                        });
+                });
+
+            modelBuilder.Entity("Laboratorium1.Models.ContactEntity", b =>
+                {
+                    b.HasOne("Laboratorium1.Models.OrganizationEntity", "Organization")
+                        .WithMany("Contacts")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("Laboratorium1.Models.OrganizationEntity", b =>
+                {
+                    b.OwnsOne("Laboratorium1.Models.Address", "Address", b1 =>
+                        {
+                            b1.Property<int>("OrganizationEntityId")
+                                .HasColumnType("INTEGER");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("Street")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.HasKey("OrganizationEntityId");
+
+                            b1.ToTable("organisations");
+
+                            b1.WithOwner()
+                                .HasForeignKey("OrganizationEntityId");
+
+                            b1.HasData(
+                                new
+                                {
+                                    OrganizationEntityId = 1,
+                                    City = "Kraków",
+                                    Street = "św. Filipa 17"
+                                },
+                                new
+                                {
+                                    OrganizationEntityId = 2,
+                                    City = "Warszawa",
+                                    Street = "Wesoła 15"
+                                });
+                        });
+
+                    b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("Laboratorium1.Models.OrganizationEntity", b =>
+                {
+                    b.Navigation("Contacts");
                 });
 #pragma warning restore 612, 618
         }

@@ -37,9 +37,13 @@
         <select class="form-control"
                 asp-items="@Html.GetEnumSelectList<Category>()"
                 asp-for="Category">
-            
         </select>
         <span asp-validation-for="Category"></span>
     </div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="OrganizationId">Wybierz organizację</label>
+        <select asp-for="OrganizationId" asp-items="@Model.Organizations"></select>
+    </div>
+    
     <button type="submit" class="btn btn-outline-primary">Dodaj</button>
 </form>
