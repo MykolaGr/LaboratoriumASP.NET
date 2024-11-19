@@ -1,5 +1,7 @@
 using Laboratorium1.Models;
 using Laboratorium1.Models.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Laboratorium1;
 
@@ -8,11 +10,24 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
         // Add services to the container.
         builder.Services.AddControllersWithViews();
+        builder.Services.AddRazorPages();
         builder.Services.AddDbContext<AppDbContext>();
+        builder.Services.AddDefaultIdentity<IdentityUser>(o =>
+            {
+                o.SignIn.RequireConfirmedAccount = true;
+                o.Password.RequiredLength = 5;
+                o.Password.RequireNonAlphanumeric = false;
+                o.Password.RequireUppercase = false;
+                o.Password.RequiredUniqueChars = 0;
+            })
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<AppDbContext>();
+       
         builder.Services.AddTransient<IContactService, EFContactService>();
+        builder.Services.AddMemoryCache();
+        builder.Services.AddSession();
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -28,8 +43,10 @@ public class Program
 
         app.UseRouting();
 
+        app.UseAuthentication();
+        app.UseSession();
         app.UseAuthorization();
-
+        app.MapRazorPages();
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
